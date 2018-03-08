@@ -264,7 +264,10 @@ static void daemonize() {
 
 	setsid();
 	umask(0027);
-	chdir("/");
+	if (chdir("/") == -1) {
+		log_message(LOG_ERR, "change directory to / failed.");
+		exit(1);
+	}
 
 	// close all std fd and reopen /dev/null for them
 	int i;
